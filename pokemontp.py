@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import csv
 
 "----------------------------------------------------"
 
@@ -58,3 +58,28 @@ def lookingForLegend(listOfPk):
 
 legendPokemons = lookingForLegend(pokemonList)
 print("Q2.2. Il y a",len(legendPokemons), "pokemons legendaires")
+
+"----------------------------------------------------"
+
+"""
+Fonction pour trouver le pokemon le plus puissant
+Il y a 6 stats à sommer. Noms des variables:
+#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary
+"""
+def highestStats(listOfPk):
+    indexNom = listOfPk[0].index('Name')
+    indexStat1 = listOfPk[0].index('HP base')
+    newListOfPk = []
+    strongestPk = ["", 0]
+    
+    for i in range(1,len(listOfPk)):
+        sumOfStats = 0
+        for j in range(0,6):
+            sumOfStats = sumOfStats + int(listOfPk[i][indexStat1+j])
+        newListOfPk.append([listOfPk[i][indexNom],sumOfStats])
+        if newListOfPk[i-1][1] > strongestPk[1]:
+            strongestPk = newListOfPk[i-1]
+    
+    return strongestPk
+
+print("Q3. Le pokemon le plus puissant est", highestStats(pokemonList))
