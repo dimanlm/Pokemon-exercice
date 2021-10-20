@@ -17,8 +17,6 @@ def openCSV(csvFile):
 
 pokemonList = (openCSV('Pokemon.csv'))
 print ("Q1. There are", len(pokemonList)-1, "saved pokemons")
-#print(pokemonList[1])
-#index = pokemonList[0].index('Name')
 
 "----------------------------------------------------"
 
@@ -121,15 +119,27 @@ def pokemonGO(listOfPk):
     listOfPk[0].extend(header)
 
     for i in range(1, len(listOfPk)):
-        hpgo = hpGO(int(listOfPk[i][indexHP]))
-        attgo = attackGO(int(listOfPk[i][indexAb]), int(listOfPk[i][indexSpA]), int(listOfPk[i][indexSpeed]))
-        defgo = defenseGO(int(listOfPk[i][indexDb]), int(listOfPk[i][indexSpD]), int(listOfPk[i][indexSpeed]))
-        i_cp = cp(hpgo, attgo, defgo)
+        hpgo = round(hpGO(int(listOfPk[i][indexHP])),2) # round() used to set a maximum number of decimals, 2 in our case
+        attgo = round(attackGO(int(listOfPk[i][indexAb]), int(listOfPk[i][indexSpA]), int(listOfPk[i][indexSpeed])),2)
+        defgo = round(defenseGO(int(listOfPk[i][indexDb]), int(listOfPk[i][indexSpD]), int(listOfPk[i][indexSpeed])),2)
+        i_cp = round(cp(hpgo, attgo, defgo),2)
         extList = [str(hpgo), str(attgo), str(defgo), str(i_cp)+'\n']
         listOfPk[i].extend(extList)    
 
     return listOfPk
 
-#print (pokemonGO(pokemonList))
+"----------------------------------------------------"
+
+"""
+Fonction pour créer et écrire un fichier de texte, p.e. un csv. 
+"""
+def writeCSV(listOfPk):
+    with open('NewPokemon.csv', 'w') as out_f:
+        for line in listOfPk:
+            out_f.write(";".join(line))
+    print ("\nUpdated data have been saved in 'NewPokemon.csv'.\n")
+    return 0
+
+writeCSV(pokemonGO(pokemonList))
 
 "----------------------------------------------------"
