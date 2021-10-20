@@ -24,7 +24,7 @@ Function to find all the Grass pokemons
 * Input: a list with pokemon data
 * Output: a list of grass pokemons with their data
 Header (list[0]):
-#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary
+#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary(;Power)
 """
 def lookingForGrass(listOfPokemons):
     typeIndex = listOfPokemons[0].index('Type 1')
@@ -43,7 +43,7 @@ Function to find all the 'Legendary' pokemons
 * Input: a list with pokemon data
 * Output: a list of legendary pokemons with their data
 Header (list[0]):
-#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary
+#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary(;Power)
 """
 def lookingForLegend(listOfPokemons):
     typeIndex = listOfPokemons[0].index('Legendary')
@@ -59,25 +59,44 @@ def lookingForLegend(listOfPokemons):
 
 """
 Function to find the strongest pokemon.
-To do so, we sum all the numeric stats (HP base:Speed base)
+To do so, we sum all the numeric stats (HP base:Speed base). It will also add a new column "Power" to the list of pokemon
 * Input: a list with pokemon data
-* Output: the name and the power of the strongest pokemon
+* Output: list of the strongest pokemons
 Header (listOfPokemons[0]):
-#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary
+#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary(;Power)
 """
 def highestStats(listOfPokemons):
+    # In case that highestStats() is launched multiple times, it'll verify if the column 'Power' already exists
+    # By doing this we'll avoid having multiple 'Power' columns in the list.
+    firstRun = False
+    if ('Power' not in listOfPokemons[0]):
+        listOfPokemons[0].extend(['Power'])
+        firstRun = True
+
     indexNom = listOfPokemons[0].index('Name')
     indexStat1 = listOfPokemons[0].index('HP base')
-    newlistOfPokemons = []
-    strongestPk = ["", 0]
+    indexPow = listOfPokemons[0].index('Power')
+
+    strongestPk = [0,""]
     
     for i in range(1,len(listOfPokemons)):
         sumOfStats = 0
         for j in range(0,6):
             sumOfStats = sumOfStats + int(listOfPokemons[i][indexStat1+j])
-        newlistOfPokemons.append([listOfPokemons[i][indexNom],sumOfStats])
-        if newlistOfPokemons[i-1][1] > strongestPk[1]:
-            strongestPk = newlistOfPokemons[i-1]
+        
+        # If it just added the column 'Power', it'll add the value to the list
+        if (firstRun==True):
+            listOfPokemons[i].extend([str(sumOfStats)])
+        # otherwise, it'll update the value
+        else:
+            listOfPokemons[i][indexPow] = str(sumOfStats)
+
+        # It is looking for the pokemon(s) with the highest stat. 
+        # The result list contains the highest Power value and the name(s) of the pokemon(s)
+        if (sumOfStats > strongestPk[0]):
+            strongestPk = [sumOfStats,listOfPokemons[i][indexNom],]
+        elif (sumOfStats == strongestPk[0]):
+            strongestPk.extend([listOfPokemons[i][indexNom]])
     
     return strongestPk
 
@@ -85,7 +104,7 @@ def highestStats(listOfPokemons):
 
 # Pokemon Go data calculations.
 # All inputs are values from the initial list of data imported from 'Pokemon.csv'
-"""
+"""sumOfStats
 * Input: Speed base
 * Output: speedMolt
 """
@@ -125,7 +144,7 @@ Function to calculate the stats for Pokemon Go
 * Input: a list with pokemon data
 * Output: updated list, that includes PokemonGo stats
 Header (list[0]):
-#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary
+#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary(;Power)
 """
 def pokemonGO(listOfPokemons):
     # find the index of the needed data
@@ -180,8 +199,8 @@ legendPokemons = lookingForLegend(pokemonList)
 print("Q2.2. Il y a",len(legendPokemons), "pokemons legendaires")
 
 # Get the strongest pokemon
-print("Q3. Le pokemon le plus puissant est", highestStats(pokemonList))
+print("Q3. Le/s pokemon/s le plus puissant/s est/sont", highestStats(pokemonList))
 
 # Calculate the new stats and update the initial list: pokemonGO(list)
-# Write everything in a new file called 'NewPokemon.csv' writeCSV(list)
+# Write everything in a new file called 'NewPokemon.csv': writeCSV(list)
 writeCSV(pokemonGO(pokemonList))
