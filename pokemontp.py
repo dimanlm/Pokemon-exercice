@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import csv
+import math
 
 "----------------------------------------------------"
 
@@ -11,6 +11,7 @@ def openCSV(csvFile):
         aListOfPokemons = []
         for column in f:
             infos = column.split(';')
+            infos[-1] = infos[-1].strip() # remove \n at the end of the line
             aListOfPokemons.append((infos[0:]))
     return aListOfPokemons
 
@@ -47,11 +48,11 @@ Noms des variables:
 #;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary
 """
 def lookingForLegend(listOfPk):
-    typeIndex = listOfPk[0].index('Legendary\n')
+    typeIndex = listOfPk[0].index('Legendary')
     legendPokemons = []
     
     for i in range(len(listOfPk)):
-        if (listOfPk[i][typeIndex] == 'True\n'):
+        if (listOfPk[i][typeIndex] == 'True'):
             legendPokemons.append(listOfPk[i])
     
     return legendPokemons
@@ -83,3 +84,44 @@ def highestStats(listOfPk):
     return strongestPk
 
 print("Q3. Le pokemon le plus puissant est", highestStats(pokemonList))
+
+
+"----------------------------------------------------"
+
+"""
+Fonction pour calculer les stats de Pokemon Go
+Noms des variables:
+#;Name;Type 1;Type 2;HP base;Attack base;Defense base;Sp. Atk base;Sp. Def base;Speed base;Generation;Legendary
+"""
+def speedMolt(speedBase):
+    return (1+(speedBase-75)/500)
+
+def hpGO (hpBase):
+    return (50+1.75*hpBase)
+
+def attackGO (attackBase, attackSp, speedBase):
+    return (1/4 * min(attackBase, attackSp) + 7/4 * max(attackBase, attackSp)*speedMolt(speedBase))
+
+def defenseGO(defenseBase, defenseSp, speedBase):
+    return (3/4 * min(defenseBase, defenseSp) + 5/4 * max(defenseBase, defenseSp)*speedMolt(speedBase))
+
+def cp(hpGO, attackGO, defenseGO):
+    return (math.sqrt(hpGO)*attackGO*math.sqrt(defenseGO)/10)
+
+
+def pokemonGO(listOfPk):
+    indexHP = listOfPk[0].index('HP base')
+    indexAb = listOfPk[0].index('Attack base')
+    indexDb = listOfPk[0].index('Defense base')
+    indexSpA = listOfPk[0].index('Sp. Atk base')
+    indexSpD = listOfPk[0].index('Sp. Def base')
+    indexSpeed = listOfPk[0].index('Speed base')
+
+    header = ['HP GO', 'Attack GO', 'Defense GO', 'CP\n']
+    listOfPk[0].extend(header)
+
+    return listOfPk
+
+#print (pokemonGO(pokemonList))
+
+"----------------------------------------------------"
