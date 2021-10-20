@@ -120,6 +120,14 @@ def pokemonGO(listOfPk):
     header = ['HP GO', 'Attack GO', 'Defense GO', 'CP\n']
     listOfPk[0].extend(header)
 
+    for i in range(1, len(listOfPk)):
+        hpgo = hpGO(int(listOfPk[i][indexHP]))
+        attgo = attackGO(int(listOfPk[i][indexAb]), int(listOfPk[i][indexSpA]), int(listOfPk[i][indexSpeed]))
+        defgo = defenseGO(int(listOfPk[i][indexDb]), int(listOfPk[i][indexSpD]), int(listOfPk[i][indexSpeed]))
+        i_cp = cp(hpgo, attgo, defgo)
+        extList = [str(hpgo), str(attgo), str(defgo), str(i_cp)+'\n']
+        listOfPk[i].extend(extList)    
+
     return listOfPk
 
 #print (pokemonGO(pokemonList))
