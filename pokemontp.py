@@ -185,22 +185,46 @@ def writeCSV(listOfPokemons):
 
 "----------------------------------------------------"
 
+# Choose a language for the results output
+language = None
+while True:
+    language = input("Language (en/fr): ")
+    if language.lower() not in ('en', 'fr'):
+        print("Language not found")
+    else:
+        break
 
-# Open, read and save the data from 'Pokemon.csv' in a list
-pokemonList = (openCSV('Pokemon.csv'))
-print ("Q1. There are", len(pokemonList)-1, "saved pokemons")
+if language.lower()=='fr':
+    # Open, read and save the data from 'Pokemon.csv' in a list
+    pokemonList = (openCSV('Pokemon.csv'))
+    print ("Q1. Il y a", len(pokemonList)-1, "pokemons")
 
-# Find all grass type pokemons
-grassPokemons = lookingForGrass(pokemonList)
-print("Q2.1. Il y a",len(grassPokemons), "pokemons de type plante")
+    # Find all grass type pokemons
+    grassPokemons = lookingForGrass(pokemonList)
+    print("Q2.1. Il y a",len(grassPokemons), "pokemons de type plante")
 
-# Find all the legendary pokemons
-legendPokemons = lookingForLegend(pokemonList)
-print("Q2.2. Il y a",len(legendPokemons), "pokemons legendaires")
+    # Find all the legendary pokemons
+    legendPokemons = lookingForLegend(pokemonList)
+    print("Q2.2. Il y a",len(legendPokemons), "pokemons legendaires")
 
-# Get the strongest pokemon
-print("Q3. Le/s pokemon/s le plus puissant/s est/sont", highestStats(pokemonList))
+    # Get the strongest pokemon
+    print("Q3. Le/s pokemon/s le plus puissant/s est/sont", highestStats(pokemonList))
+else:
+    # Open, read and save the data from 'Pokemon.csv' in a list
+    pokemonList = (openCSV('Pokemon.csv'))
+    print ("Q1. There are", len(pokemonList)-1, "pokemons in the list")
 
+    # Find all grass type pokemons
+    grassPokemons = lookingForGrass(pokemonList)
+    print("Q2.1. There are",len(grassPokemons), "Grass pokemons")
+
+    # Find all the legendary pokemons
+    legendPokemons = lookingForLegend(pokemonList)
+    print("Q2.2. There are",len(legendPokemons), "legendary pokemons")
+
+    # Get the strongest pokemon
+    print("Q3. The strongest pokemon/s is/are: ", highestStats(pokemonList))
+    
 # Calculate the new stats and update the initial list: pokemonGO(list)
 # Write everything in a new file called 'NewPokemon.csv': writeCSV(list)
 writeCSV(pokemonGO(pokemonList))
