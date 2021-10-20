@@ -1,0 +1,22 @@
+TP 1
+
+Lire le fichier « Pokemon.csv »​
+
+Parser le fichier nativement​
+
+
+Répondre aux questions suivante​​
+
+Combien y a-t-il de Pokémons référencés ?​
+
+Combien de Pokémons sont de type Plante ? Combien sont légendaires ?​
+
+Calculer pour chaque Pokémon sa puissance totale (Somme totale de ses statistiques).​
+
+Quel est le Pokémon le plus puissant ?​
+
+Convertir chaque statistique de Pokémon de la série RPG, en statistique de Pokémon GO.​
+
+
+
+Ecrire le résultat dans un nouveau fichier CSV, avec les colonnes supplémentaires suivantes : puissance totale, HP GO, Attack GO, Defense GO, CP.​
